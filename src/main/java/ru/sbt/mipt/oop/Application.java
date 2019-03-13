@@ -1,9 +1,15 @@
 package ru.sbt.mipt.oop;
 
 
+import ru.sbt.mipt.oop.eventHandlers.CloseHallDoorHandler;
+import ru.sbt.mipt.oop.eventHandlers.DoorSensorEventHandler;
+import ru.sbt.mipt.oop.eventHandlers.EventHandler;
+import ru.sbt.mipt.oop.eventHandlers.LightSensorEventHandler;
+import ru.sbt.mipt.oop.eventProdusers.EventProducer;
+import ru.sbt.mipt.oop.eventProdusers.RandomEventProducer;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Application {
 
@@ -11,27 +17,26 @@ public class Application {
         // считываем состояние дома из файла
         SmartHome smartHome = new JsonHomeReader("smart-home-1.js").readSmartHome();
 
-        List<SensorEvent> events = generateSensorsEventsList(0.01);
-        for (SensorEvent event: events) {
-            System.out.println("Got event: " + event);
-            event.processSensorEvent(smartHome);
+
+        EventProducer eventProducer = new RandomEventProducer();
+        ArrayList<EventHandler> handlers = createConfigHandlers();
+
+
+        while (eventProducer.hasNext()) {
+            SensorEvent newEvent = eventProducer.nextEvent();
+            System.out.println("Got event: " + newEvent);
+            for (EventHandler handler : handlers) {
+                handler.handleEvent(smartHome, newEvent);
+            }
         }
     }
 
 
-    private static List<SensorEvent> generateSensorsEventsList(double flush) {
-        List<SensorEvent> events = new ArrayList<>();
-        while (Math.random() > flush) {
-            SensorEventType sensorEventType = SensorEventType.values()[(int) (4 * Math.random())];
-            String objectId = "" + ((int) (10 * Math.random()));
-            switch (sensorEventType) {
-                case DOOR_OPEN:
-                case DOOR_CLOSED: events.add(new DoorSensorEvent(sensorEventType, objectId)); break;
-                case LIGHT_ON:
-                case LIGHT_OFF: events.add(new LightSensorEvent(sensorEventType, objectId)); break;
-            }
-        }
-
-        return events;
+    private static ArrayList<EventHandler> createConfigHandlers() {
+        ArrayList<EventHandler> handlers = new ArrayList<>();
+        handlers.add(new DoorSensorEventHandler());
+        handlers.add(new LightSensorEventHandler());
+        handlers.add(new CloseHallDoorHandler());
+        return handlers;
     }
 }

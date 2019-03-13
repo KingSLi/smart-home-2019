@@ -1,6 +1,6 @@
 package ru.sbt.mipt.oop;
 
-public abstract class SensorEvent {
+public class SensorEvent {
     private final String objectId;
     private final SensorEventType eventType;
 
@@ -24,7 +24,4 @@ public abstract class SensorEvent {
                 ", objectId='" + objectId + '\'' +
                 '}';
     }
-
-    public abstract void processSensorEvent(SmartHome smartHome);
-
 }
