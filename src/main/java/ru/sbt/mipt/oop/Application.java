@@ -8,12 +8,11 @@ import ru.sbt.mipt.oop.eventHandlers.LightSensorEventHandler;
 import ru.sbt.mipt.oop.eventProdusers.EventProducer;
 import ru.sbt.mipt.oop.eventProdusers.RandomEventProducer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Application {
 
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) {
         // считываем состояние дома из файла
         SmartHome smartHome = new JsonHomeReader("smart-home-1.js").readSmartHome();
 
