@@ -3,15 +3,18 @@ package testHandlers;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import ru.sbt.mipt.oop.*;
-import ru.sbt.mipt.oop.eventHandlers.CloseHallDoorHandler;
+import ru.sbt.mipt.oop.commands.SenderCommand;
+import ru.sbt.mipt.oop.commands.SensorCommand;
+import ru.sbt.mipt.oop.eventHandlers.CloseHallDoorEventHandler;
 import ru.sbt.mipt.oop.eventHandlers.LightSensorEventHandler;
 import ru.sbt.mipt.oop.homeInsides.Light;
+import ru.sbt.mipt.oop.homeinputoutput.JsonHomeReader;
 
 public class HallDoorTest {
     @Test
     void checkAllOff() {
         SmartHome smartHome = new JsonHomeReader("smart-home-1.js").readSmartHome();
-        CloseHallDoorHandler handler = new CloseHallDoorHandler(new SenderCommandToTrash());
+        CloseHallDoorEventHandler handler = new CloseHallDoorEventHandler(new SenderCommandToTrash());
 
         handler.handleEvent(smartHome, new SensorEvent(SensorEventType.DOOR_CLOSED, "4"));
         // check state
@@ -25,7 +28,7 @@ public class HallDoorTest {
     @Test
     void checkNoHallDoorClosed() {
         SmartHome smartHome = new JsonHomeReader("smart-home-1.js").readSmartHome();
-        CloseHallDoorHandler handler = new CloseHallDoorHandler(new SenderCommandToTrash());
+        CloseHallDoorEventHandler handler = new CloseHallDoorEventHandler(new SenderCommandToTrash());
         LightSensorEventHandler lightHandler = new LightSensorEventHandler();
 
         lightHandler.handleEvent(smartHome, new SensorEvent(SensorEventType.LIGHT_ON, "4"));

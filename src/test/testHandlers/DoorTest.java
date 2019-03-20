@@ -2,7 +2,7 @@ package testHandlers;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import ru.sbt.mipt.oop.JsonHomeReader;
+import ru.sbt.mipt.oop.homeinputoutput.JsonHomeReader;
 import ru.sbt.mipt.oop.SensorEvent;
 import ru.sbt.mipt.oop.SensorEventType;
 import ru.sbt.mipt.oop.SmartHome;

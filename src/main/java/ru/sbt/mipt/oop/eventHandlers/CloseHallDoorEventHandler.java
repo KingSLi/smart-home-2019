@@ -1,18 +1,22 @@
 package ru.sbt.mipt.oop.eventHandlers;
 
 import ru.sbt.mipt.oop.*;
+import ru.sbt.mipt.oop.commands.CommandType;
+import ru.sbt.mipt.oop.commands.SenderCommand;
+import ru.sbt.mipt.oop.commands.SensorCommand;
+import ru.sbt.mipt.oop.commands.SoutSenderCommand;
 import ru.sbt.mipt.oop.homeInsides.Door;
 import ru.sbt.mipt.oop.homeInsides.Light;
 import ru.sbt.mipt.oop.homeInsides.Room;
 
-public class CloseHallDoorHandler implements EventHandler {
+public class CloseHallDoorEventHandler implements EventHandler {
     private final SenderCommand senderCommand;
 
-    public CloseHallDoorHandler() {
+    public CloseHallDoorEventHandler() {
         this.senderCommand = new SoutSenderCommand();
     }
 
-    public CloseHallDoorHandler(SenderCommand senderCommand) {
+    public CloseHallDoorEventHandler(SenderCommand senderCommand) {
         this.senderCommand = senderCommand;
     }
 

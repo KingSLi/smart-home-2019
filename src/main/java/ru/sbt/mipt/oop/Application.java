@@ -1,12 +1,10 @@
 package ru.sbt.mipt.oop;
 
 
-import ru.sbt.mipt.oop.eventHandlers.CloseHallDoorHandler;
-import ru.sbt.mipt.oop.eventHandlers.DoorSensorEventHandler;
-import ru.sbt.mipt.oop.eventHandlers.EventHandler;
-import ru.sbt.mipt.oop.eventHandlers.LightSensorEventHandler;
+import ru.sbt.mipt.oop.eventHandlers.*;
 import ru.sbt.mipt.oop.eventProdusers.EventProducer;
 import ru.sbt.mipt.oop.eventProdusers.RandomEventProducer;
+import ru.sbt.mipt.oop.homeinputoutput.JsonHomeReader;
 
 import java.util.ArrayList;
 
@@ -33,9 +31,13 @@ public class Application {
 
     private static ArrayList<EventHandler> createConfigHandlers() {
         ArrayList<EventHandler> handlers = new ArrayList<>();
-        handlers.add(new DoorSensorEventHandler());
-        handlers.add(new LightSensorEventHandler());
-        handlers.add(new CloseHallDoorHandler());
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new DoorSensorEventHandler()));
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new LightSensorEventHandler()));
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new CloseHallDoorEventHandler()));
+        handlers.add(new AlarmEventHandler());
         return handlers;
     }
 }
