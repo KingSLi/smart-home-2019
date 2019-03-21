@@ -2,7 +2,7 @@ package ru.sbt.mipt.oop;
 
 import ru.sbt.mipt.oop.action.Action;
 import ru.sbt.mipt.oop.action.Actionable;
-import ru.sbt.mipt.oop.homeInsides.Alarm;
+import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.homeInsides.Room;
 
 import java.util.ArrayList;

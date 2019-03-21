@@ -2,17 +2,16 @@ package testStates;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import ru.sbt.mipt.oop.SensorEvent;
-import ru.sbt.mipt.oop.SensorEventType;
+import ru.sbt.mipt.oop.event.*;
 import ru.sbt.mipt.oop.SmartHome;
-import ru.sbt.mipt.oop.eventHandlers.*;
+import ru.sbt.mipt.oop.event.handlers.AlarmEventHandler;
+import ru.sbt.mipt.oop.event.handlers.EventHandler;
 import ru.sbt.mipt.oop.eventProdusers.ListConstEventProducer;
 import ru.sbt.mipt.oop.homeInsides.Door;
 import ru.sbt.mipt.oop.homeInsides.Light;
 import ru.sbt.mipt.oop.homeInsides.Room;
-import ru.sbt.mipt.oop.states.ActivateState;
-import ru.sbt.mipt.oop.states.AlarmState;
-import ru.sbt.mipt.oop.states.DeactivateState;
+import ru.sbt.mipt.oop.alarm.AlarmState;
+import ru.sbt.mipt.oop.alarm.DeactivateState;
 
 import java.util.Arrays;
 
@@ -32,13 +31,13 @@ public class DeactivateTest {
     void deactivateWithRightCode() {
         SmartHome smartHome = generateDefaultHome();
         ListConstEventProducer events = new ListConstEventProducer(Arrays.asList(
-                        new SensorEvent(SensorEventType.ALARM_ACTIVATE, "1"),
-                        new SensorEvent(SensorEventType.ALARM_DEACTIVATE, "1")));
+                        new AlarmEvent(AlarmEventType.ALARM_ACTIVATE, "1"),
+                        new AlarmEvent(AlarmEventType.ALARM_DEACTIVATE, "1")));
 
-        EventHandler handler = new AlarmEventHandler();
+        EventHandler handler = new AlarmEventHandler(smartHome);
         while(events.hasNext()) {
-            SensorEvent event = events.nextEvent();
-            handler.handleEvent(smartHome, event);
+            Event event = events.nextEvent();
+            handler.handleEvent(event);
         }
         Assert.assertTrue(smartHome.getAlarm().getState() instanceof DeactivateState);
     }
@@ -47,12 +46,12 @@ public class DeactivateTest {
     void deactivateWithBadCode() {
         SmartHome smartHome = generateDefaultHome();
         ListConstEventProducer events = new ListConstEventProducer(Arrays.asList(
-                new SensorEvent(SensorEventType.ALARM_ACTIVATE, "1"),
-                new SensorEvent(SensorEventType.ALARM_DEACTIVATE, "2")));
-        EventHandler handler = new AlarmEventHandler();
+                new AlarmEvent(AlarmEventType.ALARM_ACTIVATE, "1"),
+                new AlarmEvent(AlarmEventType.ALARM_DEACTIVATE, "2")));
+        EventHandler handler = new AlarmEventHandler(smartHome);
         while(events.hasNext()) {
-            SensorEvent event = events.nextEvent();
-            handler.handleEvent(smartHome, event);
+            Event event = events.nextEvent();
+            handler.handleEvent(event);
         }
         Assert.assertTrue(smartHome.getAlarm().getState() instanceof AlarmState);
     }
@@ -61,20 +60,20 @@ public class DeactivateTest {
     void deactivateWhenAlarmState() {
         SmartHome smartHome = generateDefaultHome();
         ListConstEventProducer events = new ListConstEventProducer(Arrays.asList(
-                new SensorEvent(SensorEventType.ALARM_ACTIVATE, "1"),
-                new SensorEvent(SensorEventType.ALARM_DEACTIVATE, "2"),
-                new SensorEvent(SensorEventType.ALARM_DEACTIVATE, "2"),
-                new SensorEvent(SensorEventType.ALARM_DEACTIVATE, "1")));
+                new AlarmEvent(AlarmEventType.ALARM_ACTIVATE, "1"),
+                new AlarmEvent(AlarmEventType.ALARM_DEACTIVATE, "2"),
+                new AlarmEvent(AlarmEventType.ALARM_DEACTIVATE, "2"),
+                new AlarmEvent(AlarmEventType.ALARM_DEACTIVATE, "1")));
 
-        EventHandler handler = new AlarmEventHandler();
+        EventHandler handler = new AlarmEventHandler(smartHome);
 
-        handler.handleEvent(smartHome, events.nextEvent());
-        handler.handleEvent(smartHome, events.nextEvent());
+        handler.handleEvent(events.nextEvent());
+        handler.handleEvent(events.nextEvent());
 
-        handler.handleEvent(smartHome, events.nextEvent());
+        handler.handleEvent(events.nextEvent());
         Assert.assertTrue(smartHome.getAlarm().getState() instanceof AlarmState);
 
-        handler.handleEvent(smartHome, events.nextEvent());
+        handler.handleEvent(events.nextEvent());
         Assert.assertTrue(smartHome.getAlarm().getState() instanceof DeactivateState);
     }
 }

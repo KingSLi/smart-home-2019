@@ -1,16 +1,14 @@
-package ru.sbt.mipt.oop.states;
-
-import ru.sbt.mipt.oop.homeInsides.Alarm;
+package ru.sbt.mipt.oop.alarm;
 
 public class ActivateState extends State {
 
-    public ActivateState(Alarm alarm, Long code) {
+    public ActivateState(Alarm alarm, String code) {
         super(alarm);
         this.alarm.setCode(code);
     }
 
     @Override
-    public void activate(Long code) {
+    public void activate(String code) {
         if (code.equals(alarm.getCode())) {
             System.out.println("[INFO]\t repeating activation");
         } else {
@@ -19,7 +17,7 @@ public class ActivateState extends State {
     }
 
     @Override
-    public void deActivate(Long code) {
+    public void deActivate(String code) {
         if (code.equals(alarm.getCode())) {
             alarm.changeState(new DeactivateState(alarm));
             System.out.println("[INFO]\t deactivation allowed");

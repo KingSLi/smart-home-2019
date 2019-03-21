@@ -1,7 +1,8 @@
 package ru.sbt.mipt.oop;
 
 
-import ru.sbt.mipt.oop.eventHandlers.*;
+import ru.sbt.mipt.oop.event.*;
+import ru.sbt.mipt.oop.event.handlers.*;
 import ru.sbt.mipt.oop.eventProdusers.EventProducer;
 import ru.sbt.mipt.oop.eventProdusers.RandomEventProducer;
 import ru.sbt.mipt.oop.homeinputoutput.JsonHomeReader;
@@ -16,28 +17,28 @@ public class Application {
 
 
         EventProducer eventProducer = new RandomEventProducer();
-        ArrayList<EventHandler> handlers = createConfigHandlers();
+        ArrayList<EventHandler> handlers = createConfigHandlers(smartHome);
 
 
         while (eventProducer.hasNext()) {
-            SensorEvent newEvent = eventProducer.nextEvent();
+            Event newEvent = eventProducer.nextEvent();
             System.out.println("Got event: " + newEvent);
             for (EventHandler handler : handlers) {
-                handler.handleEvent(smartHome, newEvent);
+                handler.handleEvent(newEvent);
             }
         }
     }
 
 
-    private static ArrayList<EventHandler> createConfigHandlers() {
+    private static ArrayList<EventHandler> createConfigHandlers(SmartHome smartHome) {
         ArrayList<EventHandler> handlers = new ArrayList<>();
         handlers.add(new AlarmDecoratorSensorEventHandler(
-                new DoorSensorEventHandler()));
+                new DoorSensorEventHandler(smartHome), smartHome.getAlarm()));
         handlers.add(new AlarmDecoratorSensorEventHandler(
-                new LightSensorEventHandler()));
+                new LightSensorEventHandler(smartHome), smartHome.getAlarm()));
         handlers.add(new AlarmDecoratorSensorEventHandler(
-                new CloseHallDoorEventHandler()));
-        handlers.add(new AlarmEventHandler());
+                new CloseHallDoorEventHandler(smartHome), smartHome.getAlarm()));
+        handlers.add(new AlarmEventHandler(smartHome));
         return handlers;
     }
 }

@@ -1,7 +1,6 @@
 package ru.sbt.mipt.oop.eventProdusers;
 
-import ru.sbt.mipt.oop.SensorEvent;
-import ru.sbt.mipt.oop.SensorEventType;
+import ru.sbt.mipt.oop.event.*;
 
 public class RandomEventProducer implements EventProducer {
     private Double passLevel;
@@ -16,13 +15,19 @@ public class RandomEventProducer implements EventProducer {
     }
 
     @Override
-    public SensorEvent nextEvent() {
+    public Event nextEvent() {
         if (current_proba <= passLevel) {
             return  null;
         }
-        SensorEventType sensorEventType = SensorEventType.values()[(int) (4 * Math.random())];
-        String objectId = "" + ((int) (10 * Math.random()));
-        return new SensorEvent(sensorEventType, objectId);
+        if (Math.random() > 0.35) {
+            SensorEventType sensorEventType = SensorEventType.values()[(int) (SensorEventType.values().length * Math.random())];
+            String objectId = "" + ((int) (10 * Math.random()));
+            return new SensorEvent(sensorEventType, objectId);
+        }
+        AlarmEventType alarmEventType = AlarmEventType.values()[(int) (AlarmEventType.values().length * Math.random())];
+        String code = "" + ((int) (100 * Math.random()));
+        return new SensorEvent(alarmEventType, code);
+
     }
 
     @Override

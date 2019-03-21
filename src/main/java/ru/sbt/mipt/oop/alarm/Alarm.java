@@ -1,25 +1,22 @@
-package ru.sbt.mipt.oop.homeInsides;
-
-import ru.sbt.mipt.oop.states.DeactivateState;
-import ru.sbt.mipt.oop.states.State;
+package ru.sbt.mipt.oop.alarm;
 
 public class Alarm{
     private State state;
-    private Long code;
+    private String code;
     // код для деактивации сигнализации при попытке взломать систему
-    private final Long ALARM_DEACTIVATION_CODE;
+    private final String ALARM_DEACTIVATION_CODE;
 
 
     public Alarm() {
-        this(42L);
+        this("BestCodeHere");
     }
 
-    public Alarm(Long deactivationCode) {
+    public Alarm(String deactivationCode) {
         this.state = new DeactivateState(this);
         ALARM_DEACTIVATION_CODE = deactivationCode;
     }
 
-    public void changeState(State state) {
+    void changeState(State state) {
         this.state = state;
     }
 
@@ -29,21 +26,21 @@ public class Alarm{
         return state;
     }
 
-    public void setCode(Long code) {
+    void setCode(String code) {
         this.code = code;
     }
 
-    public Long getCode() {
+    String getCode() {
         return code;
     }
 
 
 
-    public void activate(Long code) {
+    public void activate(String code) {
         state.activate(code);
     }
 
-    public void deActivate(Long code) {
+    public void deActivate(String code) {
         state.deActivate(code);
     }
 
