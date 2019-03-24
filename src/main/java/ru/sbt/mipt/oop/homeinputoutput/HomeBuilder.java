@@ -1,7 +1,8 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.homeinputoutput;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.homeInsides.Door;
 import ru.sbt.mipt.oop.homeInsides.Light;
 import ru.sbt.mipt.oop.homeInsides.Room;

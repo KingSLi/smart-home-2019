@@ -1,23 +1,38 @@
-package ru.sbt.mipt.oop.eventHandlers;
+package ru.sbt.mipt.oop.event.handlers;
 
 import ru.sbt.mipt.oop.*;
+import ru.sbt.mipt.oop.commands.CommandType;
+import ru.sbt.mipt.oop.commands.SenderCommand;
+import ru.sbt.mipt.oop.commands.SensorCommand;
+import ru.sbt.mipt.oop.commands.SoutSenderCommand;
+import ru.sbt.mipt.oop.event.Event;
+import ru.sbt.mipt.oop.event.SensorEvent;
+import ru.sbt.mipt.oop.event.SensorEventType;
 import ru.sbt.mipt.oop.homeInsides.Door;
 import ru.sbt.mipt.oop.homeInsides.Light;
 import ru.sbt.mipt.oop.homeInsides.Room;
 
-public class CloseHallDoorHandler implements EventHandler {
+public class CloseHallDoorEventHandler implements EventHandler {
+    private final SmartHome smartHome;
     private final SenderCommand senderCommand;
 
-    public CloseHallDoorHandler() {
+    public CloseHallDoorEventHandler(SmartHome smartHome) {
+        this.smartHome = smartHome;
         this.senderCommand = new SoutSenderCommand();
     }
 
-    public CloseHallDoorHandler(SenderCommand senderCommand) {
+    public CloseHallDoorEventHandler(SmartHome smartHome, SenderCommand senderCommand) {
+        this.smartHome = smartHome;
         this.senderCommand = senderCommand;
     }
 
     @Override
-    public void handleEvent(SmartHome smartHome, SensorEvent sensorEvent) {
+    public void handleEvent(Event event) {
+        if (!(event instanceof SensorEvent)) {
+            return;
+        }
+        SensorEvent sensorEvent = (SensorEvent) event;
+
         if (sensorEvent.getEventType() != SensorEventType.DOOR_CLOSED) {
             return;
         }

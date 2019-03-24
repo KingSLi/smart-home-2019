@@ -1,12 +1,11 @@
 package ru.sbt.mipt.oop;
 
 
-import ru.sbt.mipt.oop.eventHandlers.CloseHallDoorHandler;
-import ru.sbt.mipt.oop.eventHandlers.DoorSensorEventHandler;
-import ru.sbt.mipt.oop.eventHandlers.EventHandler;
-import ru.sbt.mipt.oop.eventHandlers.LightSensorEventHandler;
+import ru.sbt.mipt.oop.event.*;
+import ru.sbt.mipt.oop.event.handlers.*;
 import ru.sbt.mipt.oop.eventProdusers.EventProducer;
 import ru.sbt.mipt.oop.eventProdusers.RandomEventProducer;
+import ru.sbt.mipt.oop.homeinputoutput.JsonHomeReader;
 
 import java.util.ArrayList;
 
@@ -18,24 +17,28 @@ public class Application {
 
 
         EventProducer eventProducer = new RandomEventProducer();
-        ArrayList<EventHandler> handlers = createConfigHandlers();
+        ArrayList<EventHandler> handlers = createConfigHandlers(smartHome);
 
 
         while (eventProducer.hasNext()) {
-            SensorEvent newEvent = eventProducer.nextEvent();
+            Event newEvent = eventProducer.nextEvent();
             System.out.println("Got event: " + newEvent);
             for (EventHandler handler : handlers) {
-                handler.handleEvent(smartHome, newEvent);
+                handler.handleEvent(newEvent);
             }
         }
     }
 
 
-    private static ArrayList<EventHandler> createConfigHandlers() {
+    private static ArrayList<EventHandler> createConfigHandlers(SmartHome smartHome) {
         ArrayList<EventHandler> handlers = new ArrayList<>();
-        handlers.add(new DoorSensorEventHandler());
-        handlers.add(new LightSensorEventHandler());
-        handlers.add(new CloseHallDoorHandler());
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new DoorSensorEventHandler(smartHome), smartHome.getAlarm()));
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new LightSensorEventHandler(smartHome), smartHome.getAlarm()));
+        handlers.add(new AlarmDecoratorSensorEventHandler(
+                new CloseHallDoorEventHandler(smartHome), smartHome.getAlarm()));
+        handlers.add(new AlarmEventHandler(smartHome));
         return handlers;
     }
 }
