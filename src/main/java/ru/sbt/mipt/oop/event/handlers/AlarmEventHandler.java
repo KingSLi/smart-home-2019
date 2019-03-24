@@ -23,14 +23,6 @@ public class AlarmEventHandler implements EventHandler {
             case ALARM_ACTIVATE:
                 smartHome.getAlarm().activate(alarmEvent.getCode());break;
         }
-
-        if (smartHome.getAlarm().getState() instanceof AlarmState) {
-            alarmsall();
-        }
-    }
-
-    private void alarmsall() {
-        // todo: alalrm all
     }
 
     private boolean isAlarmEvent(Event event) {
