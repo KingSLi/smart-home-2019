@@ -3,9 +3,11 @@ package ru.sbt.mipt.oop.remotecontrol.commands;
 import ru.sbt.mipt.oop.SmartHome;
 import ru.sbt.mipt.oop.homeInsides.Room;
 
-public class TurnOnHallLightsCommand extends Command {
+public class TurnOnHallLightsCommand implements Command {
+    private SmartHome smartHome;
+
     public TurnOnHallLightsCommand(SmartHome smartHome) {
-        super(smartHome);
+        this.smartHome = smartHome;
     }
 
     @Override

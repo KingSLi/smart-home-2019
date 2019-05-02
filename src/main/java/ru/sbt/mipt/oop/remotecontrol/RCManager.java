@@ -24,9 +24,9 @@ public class RCManager {
             case LIGHT_OFF_ALL:
                 return new TurnOffAllLightsCommand(smartHome);
             case ALARM_ACTIVATE:
-                return new AlarmActivateCommand(smartHome);
+                return new AlarmActivateCommand(smartHome.getAlarm());
             case ALARM_ACTIVATE_ALARM_STATE:
-                return new AlarmActivateAlarmStateCommand(smartHome);
+                return new AlarmActivateAlarmStateCommand(smartHome.getAlarm());
             case HALL_LIGHT_ON:
                 return new TurnOnHallLightsCommand(smartHome);
             case CLOSE_HALL_DOOR:

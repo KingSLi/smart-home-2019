@@ -1,14 +1,16 @@
 package ru.sbt.mipt.oop.remotecontrol.commands;
 
-import ru.sbt.mipt.oop.SmartHome;
+import ru.sbt.mipt.oop.alarm.Alarm;
 
-public class AlarmActivateAlarmStateCommand extends Command {
-    public AlarmActivateAlarmStateCommand(SmartHome smartHome) {
-        super(smartHome);
+public class AlarmActivateAlarmStateCommand implements Command {
+    private Alarm alarm;
+
+    public AlarmActivateAlarmStateCommand(Alarm alarm) {
+        this.alarm = alarm;
     }
 
     @Override
     public void execute() {
-        smartHome.getAlarm().switchToAlarm();
+        alarm.switchToAlarm();
     }
 }

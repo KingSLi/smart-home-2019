@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsoleRemoteControl implements RemoteControl {
-    public Map<String, Command> buttons = new HashMap<>();
+    private Map<String, Command> buttons = new HashMap<>();
     private String rcId;
 
     public ConsoleRemoteControl(String rcId) {
