@@ -13,6 +13,6 @@ public class CCHandlerToHandlerAdapter implements EventHandler {
 
     @Override
     public void handleEvent(CCSensorEvent event) {
-        eventHandler.handleEvent(new CCSensorToEventAdapter(event));
+        eventHandler.handleEvent(new CCSensorToEventAdapter(event).getEvent());
     }
 }
